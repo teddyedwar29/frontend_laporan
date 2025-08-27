@@ -1,10 +1,12 @@
 import { lazy, Suspense } from 'react';
 import { Routes, Route } from 'react-router-dom';
 import { LoaderCircle } from 'lucide-react';
+
 import './App.css';
 
 const LoginPage = lazy(() => import('./pages/LoginPage'));
 const DashboardPage = lazy(() => import('./pages/admin/DashboardPage'));
+
 
 const FullPageLoader = () => (
   <div className="flex h-screen w-full items-center justify-center">

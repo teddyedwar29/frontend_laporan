@@ -1,8 +1,9 @@
 // src/components/layout/Sidebar.jsx
 import { useState } from 'react';
 import { ChevronLeft, ChevronRight, BarChart2, Users, FileText, MapPin, LogOut, FileDown } from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
+import clsx from 'clsx';
 
 const Sidebar = ({ isOpen, setIsOpen }) => {
   const [activeMenu, setActiveMenu] = useState('Dashboard');
@@ -10,7 +11,6 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
 
   const menuItems = [
     { name: 'Dashboard', icon: <BarChart2 size={20} /> },
-
   ];
 
 //   handle logout
@@ -50,20 +50,31 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
         </div>
         
         {/* Menu */}
-        <nav className="flex-1 py-6 space-y-2">
-          <h3 className={`px-6 text-xs font-semibold uppercase text-white/60 transition-opacity ${!isOpen && 'opacity-0'}`}>Menu Utama</h3>
+        <nav className="flex-1 py-6 space-y-1">
+          <h3 className={clsx('px-6 mb-2 text-xs font-semibold uppercase text-white/60 transition-opacity', !isOpen && 'opacity-0')}>
+            Menu Utama
+          </h3>
           {menuItems.map(item => (
-            <a
+            // 3. GUNAKAN NavLink AGAR LEBIH CANGGIH
+            <NavLink
               key={item.name}
-              href="#"
-              onClick={() => setActiveMenu(item.name)}
-              className={`flex items-center gap-4 py-3 px-6 mx-3 rounded-lg transition-colors ${activeMenu === item.name ? 'bg-white/15' : 'hover:bg-white/10'}`}
+              to={item.path}
+              className={({ isActive }) => 
+                clsx(
+                  'flex items-center gap-4 py-3 px-6 mx-3 rounded-lg transition-colors',
+                  !isOpen && 'justify-center',
+                  isActive ? 'bg-white/15 shadow-inner' : 'hover:bg-white/10'
+                )
+              }
             >
               <div className="flex-shrink-0">{item.icon}</div>
-              <span className={`transition-opacity duration-200 ${!isOpen && 'opacity-0'}`}>{item.name}</span>
-            </a>
+              <span className={clsx('transition-all duration-200 overflow-hidden', !isOpen ? 'w-0 opacity-0' : 'w-auto opacity-100')}>
+                {item.name}
+              </span>
+            </NavLink>
           ))}
         </nav>
+
 
         {/* Footer Menu */}
         <div className="p-3 border-t border-white/10">
