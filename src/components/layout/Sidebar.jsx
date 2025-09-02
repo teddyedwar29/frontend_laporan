@@ -1,21 +1,24 @@
 // src/components/layout/Sidebar.jsx
 import { useState } from 'react';
-import { ChevronLeft, ChevronRight, BarChart2, Users, FileText, MapPin, LogOut, FileDown } from 'lucide-react';
+import { ChevronLeft, ChevronRight, BarChart2, Users, LogOut } from 'lucide-react';
 import { NavLink, useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
 import clsx from 'clsx';
 
 const Sidebar = ({ isOpen, setIsOpen }) => {
-  const [activeMenu, setActiveMenu] = useState('Dashboard');
   const navigate = useNavigate();
 
+  // --- PERBAIKAN UTAMA DI SINI ---
+  // 1. Definisikan semua menu dalam satu array agar lebih mudah dikelola
   const menuItems = [
-    { name: 'Dashboard', icon: <BarChart2 size={20} /> },
+    { name: 'Dashboard', path: '/dashboard', icon: <BarChart2 size={20} /> },
+    { name: 'Detail Upline', path: '/hierarchy', icon: <Users size={20} /> },
+    // Anda bisa tambahkan menu lain di sini di masa depan
   ];
 
-//   handle logout
+  // handle logout
   const handleLogout = (e) => {
-     e.preventDefault(); // Mencegah link pindah halaman
+    e.preventDefault();
     Swal.fire({
       title: 'Yakin mau keluar?',
       text: "Anda akan diarahkan kembali ke halaman login.",
@@ -27,11 +30,11 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
       cancelButtonText: 'Batal'
     }).then((result) => {
       if (result.isConfirmed) {
-        // Jika user klik "Ya, keluar!"
-        navigate('/'); // Arahkan ke halaman login
+        navigate('/');
       }
     });
   }
+
   return (
     <aside className={`fixed top-0 left-0 h-screen z-50 bg-gradient-to-b from-[#193cb0] to-[#2952cc] text-white transition-all duration-300 ease-in-out ${isOpen ? 'w-72' : 'w-20'}`}>
       <div className="relative h-full flex flex-col">
@@ -54,8 +57,9 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
           <h3 className={clsx('px-6 mb-2 text-xs font-semibold uppercase text-white/60 transition-opacity', !isOpen && 'opacity-0')}>
             Menu Utama
           </h3>
+          
+          {/* 2. Loop array menu yang sudah diperbarui */}
           {menuItems.map(item => (
-            // 3. GUNAKAN NavLink AGAR LEBIH CANGGIH
             <NavLink
               key={item.name}
               to={item.path}
@@ -75,12 +79,13 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
           ))}
         </nav>
 
-
         {/* Footer Menu */}
         <div className="p-3 border-t border-white/10">
-          <a href="#" onClick={handleLogout} className="flex items-center gap-4 py-3 px-6 rounded-lg hover:bg-white/10">
+          <a href="#" onClick={handleLogout} className="flex items-center gap-4 py-3 px-6 mx-3 rounded-lg hover:bg-white/10">
             <LogOut className='flex-shrink-0' size={20} />
-            <span className={`transition-opacity duration-200 overflow-hidden ${!isOpen ? 'w-0 opacity-0' : 'w-auto opacity-100'}`}>Keluar</span>
+            <span className={clsx('transition-opacity duration-200 overflow-hidden', !isOpen ? 'w-0 opacity-0' : 'w-auto opacity-100')}>
+              Keluar
+            </span>
           </a>
         </div>
       </div>

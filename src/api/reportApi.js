@@ -16,3 +16,13 @@ export const getReports = (params) => {
 export const compareReports = (params) => {
   return api.get('/report/compare', { params });
 };
+
+
+/**
+ * Mengambil data laporan hirarki upline dan downline.
+ * @param {object} params - Contoh: { page: 1, limit: 10 }
+ */
+export const getHierarchyReport = (params) => {
+  // Pastikan endpoint sesuai dengan yang Anda berikan
+  return api.get('/report/hierarchy', { params });
+};

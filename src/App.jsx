@@ -6,7 +6,7 @@ import './App.css';
 
 const LoginPage = lazy(() => import('./pages/LoginPage'));
 const DashboardPage = lazy(() => import('./pages/admin/DashboardPage'));
-
+const HierarchyPage = lazy(() => import('./pages/admin/HierarchyPage'));
 
 const FullPageLoader = () => (
   <div className="flex h-screen w-full items-center justify-center">
@@ -20,6 +20,7 @@ function App() {
       <Routes>
         <Route path="/" element={<LoginPage />} />
         <Route path="/dashboard" element={<DashboardPage />} />
+        <Route path="/hierarchy" element={<HierarchyPage />} />
       </Routes>
     </Suspense>
   )
